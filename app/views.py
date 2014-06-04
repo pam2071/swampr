@@ -1,21 +1,39 @@
 # -*- coding: utf-8 -*- 
 
-from app import app
-from flask import render_template
-from models import Post
+from app import app, db                    #Import our app components from other files
+from flask import Flask, render_template, redirect
+from models import Post, User
+from forms import NewUserForm
+
 
 
 @app.route('/')
-def index():
-	some_post = Post("Not much to say", "Aliya", "Today was an uneventful day")
-	some_other_post = Post("I had an Aha Moment", "Pam",  "It made me misty I guess I saw the light")
-	seventh_week_post = Post("Extra Amazing Week", "Pam", "Went to AFLCIO to see Nicole my Mentor AND a Rooftop Party at Perrys")
-	seventh_week_day4_post = Post("TGIAF", "Pam", "And this week is not even close to being over Transparency Camp on Saturday")
+def index():                                #This is the landing page
+	all_users= User.query.all()
+        posts = Post.query.all()
+	return render_template("index.html", users = all_users, posts = posts)
+
 	
-	return render_template ("index.html", posts = [some_post, some_other_post, seventh_week_post, seventh_week_day4_post])
+@app.route('/add_user', methods = ['GET', 'POST'])
+def add_user():
+	form = NewUserForm()
+	if form.validate_on_submit():
+		user = User()
+		form.populate_obj(user)
+		db.session.add(user)
+		db.session.commit()
+		return redirect('/')
+	return render_template("add_user.html", form = form)
 
-
-
+def add_post():
+	form = BlogPostForm()
+	if form.validate_on_submit():
+		user = User()
+		form.populate_obj(user)
+		db.session.add(user)
+		db.session.commit()
+		return redirect('/')
+	return render_template("add_user.html", form = form)	
 
 
 

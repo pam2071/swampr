@@ -1,0 +1,27 @@
+<body>
+
+<h1>Hello! These are our most recent posts!</h>
+
+{% for rockstar in users %}
+	<div class="post_holder">
+		<p><span class="post_heading">{{rockstar.username}}</span>
+		<br> ({{rockstar.firstname}} {{rockstar.lastname}})</p>
+
+	</div>
+{% endfor %}
+
+{% for post in posts: %}
+	<p><b>{{post.title}}</b>
+	<br>{{post.content}}</p>
+{% endfor %}
+
+</body>
+
+<form action="/html/tags/html_form_tag_action.cfm" method="post">
+<textarea name="comments" id="comments" style="width:150px;height:100px;font-family:cursive;border:solid 12px #6DB72C;">
+#Enter your comments here...
+#
+#...and watch your comment box grow scrollbars!
+</textarea><br>
+<input type="submit" value="Submit">
+</form>
